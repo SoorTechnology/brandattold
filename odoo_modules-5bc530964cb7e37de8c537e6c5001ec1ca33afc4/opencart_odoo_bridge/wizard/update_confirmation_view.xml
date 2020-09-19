@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present site-module Software Pvt. Ltd. (<https://site-module.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<odoo>
+<data>
+
+        <record id="wizard_update_confirmation_export_form" model="ir.ui.view">
+            <field name="name">Update Confirmation</field>
+            <field name="model">update.confirmation</field>
+             <field name="priority" eval="1"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Confirmation" version="7.0">
+
+                    <separator string="Select the Option for Updating Products"/>
+                    <group colspan="1" col="4">
+                        <field name="choice" required="1" />
+                    </group>
+                         <b> Note: </b>
+                         <p class="oe_grey oe_inline">
+                           <b>*Product Template Only:</b> Using this Option only product Template will be Updated to OpenCart, In this Case Variants won't be updated to OpenCart.
+                           <br/>
+                           <b>*Product Template and Variant:</b> By This Option Template and it's Variant will be Updated Perfectly, In This Case OpenCart product options and it's values will be replaced with current Odoo Product Template.
+                         </p>
+                         <p>
+                            Following fields is mapped between opencart(product) to Odoo(Template) which will be updated from both end.
+                            <br/><b>(name, price, sku/reference, description, category, weight, quantity)</b>
+                        </p>
+                    <separator/>
+                    <footer>
+
+                        <button name="update_products_confirmation" string="Update Products" type="object"  class="oe_inline" invisible="not context.get('all',False)" />
+
+                        <button name="export_selected_product" string="Export/Update Product(s)" type="object"  class="oe_inline" invisible="not context.get('selected',False)" />
+
+                         or
+                        <button special="cancel" class="oe_highlight" string="Close" />
+                    </footer>
+
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_update_confirmation_export" model="ir.actions.act_window">
+            <field name="name">Product update confirmation</field>
+            <field name="res_model">update.confirmation</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="wizard_update_confirmation_export_form"/>
+            <field name="context">{'all':True}</field>
+        </record>
+
+        <act_window id="action_update_confirmation_export1"
+            key2="client_action_multi"
+            name="Synchronize with OpenCart"
+            res_model="update.confirmation"
+            src_model="product.template"
+            view_mode="form" target="new" view_type="form" context="{'selected':True}"/>
+
+</data>
+</odoo>
