@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present site-module Software Pvt. Ltd. (<https://site-module.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<odoo>
+    <data>
+        <record id="view_oob_config_settings" model="ir.ui.view">
+            <field name="name">OOB Settings</field>
+            <field name="model">oob.config.settings</field>
+            <field name="arch" type="xml">
+                <form string="Configure Opencart Bridge" class="oe_form_configuration">
+                    <header>
+                        <button string="Apply" type="object" name="execute" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" type="object" name="cancel" class="oe_link"/>
+                    </header>
+                    <separator string="Products"/>
+                        <p>
+                            Select Service Type Product to be used by OOB, when exporting Order from Opencart to Odoo.
+                        </p>
+                        <group>
+                            <label for="id" string="Service Products"/>
+                            <div>
+                                <div>
+                                    <field name="oob_discount_product" class="oe_inline"/>
+                                    <label string="used for Discount purposes"/>
+                                </div>
+                                <div>
+                                    <field name="oob_coupon_product" class="oe_inline"/>
+                                    <label string="Used for Coupon purposes"/>
+                                </div>
+                            </div>
+                        </group>
+                        <separator string="Sale Order"/>
+                        <p>
+                            Default Configuration For Sale Order used by OOB, when exporting Sale Order from Opencart to Odoo.
+                        </p>
+                        <group col="2">
+                            <field name="oob_payment_term" class="oe_inline"/>
+                            <field name="oob_sales_team" class="oe_inline"/>
+                            <field name="oob_sales_person" class="oe_inline"/>
+                        </group>
+                        <separator string="Sale Order Operation"/>
+                        <p>
+                            Default Configuration used by OOB, Which enables to do Sale Order Opreartion from Odoo to Opencart.
+                        </p>
+                        <div>
+                            <field name="oob_sale_order_invoice" class="oe_inline"/>
+                            <label string="enable for update invoice status at Opencart"/>
+                        </div>
+                        <div>
+                            <field name="oob_sale_order_shipment" class="oe_inline"/>
+                            <label string="enable for update shipment status at Opencart"/>
+                        </div>
+                        <div>
+                            <field name="oob_sale_order_cancel" class="oe_inline"/>
+                            <label string="enable for update cancel status at Opencart"/>
+                        </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_oob_config" model="ir.actions.act_window">
+            <field name="name">Configure Opencart Bridge</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">oob.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+        </record>
+
+        <menuitem id="menu_oob_config" name="Settings" parent="opencart_odoo_bridge.menu_opencart_id1"
+            sequence="1" action="action_oob_config"/>
+
+    </data>
+</odoo>

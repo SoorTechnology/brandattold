@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="import_stock_inventory_form_view1">
+            <field name="name">Import Stock Inventory Using CSV</field>
+            <field name="model">import.stock.inventory</field>
+                <field name="arch" type="xml">
+                    <form string="Import Stock Inventory Using CSV">
+                        <group>
+                            <group>
+                                <field name="location_id"/>
+                            </group>
+                            <group>
+                                <field name="import_product_by" widget="radio"/>
+                            </group>
+                        </group>
+                        <group>
+                            <div>
+                                <label for="datas_fname"/>
+                                <field  name="import_file" class="oe_inline" filename="datas_fname" required="True"/>
+                                <field name="datas_fname" class="oe_inline" invisible="1" readonly="0"/>
+                            </div>
+                        </group>
+                        <footer>
+                            <button string="Import" name="action_import_file" type="object" class="oe_highlight"/>
+                            or
+                            <button string="Cancel" class="oe_link" special="cancel"/>
+                        </footer>
+                    </form>
+                </field>
+        </record>
+        <record id="action_import_stock_inventory" model="ir.actions.act_window">
+            <field name="name">Import Stock Inventory Using CSV</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">import.stock.inventory</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="import_stock_inventory_form_view1"/>
+            <field name="target">new</field>
+        </record>
+   </data>
+</openerp>

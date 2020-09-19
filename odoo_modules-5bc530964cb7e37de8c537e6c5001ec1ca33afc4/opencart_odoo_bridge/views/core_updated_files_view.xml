@@ -1,0 +1,751 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present site-module Software Pvt. Ltd. (<https://site-module.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<odoo>
+    <data>
+		<record id="product_template_form_view" model="ir.ui.view">
+	        <field name="name">product.template.form.view.inherit</field>
+	        <field name="model">product.template</field>
+	        <field name="inherit_id" ref="product.product_template_form_view"/>
+			<field name="arch" type="xml">
+				<notebook position="inside">
+					<page string="Extra Categories">
+						<separator string="OpenCart Extra Categories" colspan="2"/>
+						<newline/>
+						<field name="categ_ids" nolabel="1" colspan="2"/>
+					</page>
+				</notebook>
+                <field name="description_sale" position="replace">
+                    <p class="oe_grey">(On Opencart, it appears in the product list(s), and on the top of the product page.)</p>
+                    <field name="description_sale" nolabel="1" placeholder="note to be displayed on quotations..."  widget="html" />
+                </field>
+			</field>
+		</record>
+
+		<record id="opencart_configuration_form" model="ir.ui.view">
+            <field name="name">opencart_configuration.form</field>
+            <field name="model">opencart.configuration</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+      				<form string="OpenCart Configuration">
+      					<header>
+      						<button name="test_connection" string="Test Connection" type="object" class="oe_highlight" icon="fa-1x fa-refresh " aria-label="test_connection"/>
+      					</header>
+      					<sheet>
+                  <div class="oe_button_box" name="button_box">
+                    <button name="toggle_active" type="object"
+                      class="oe_stat_button" icon="fa-archive" aria-label="oe_stat_button">
+                      <field name="active" widget="boolean_button"
+                        options='{"terminology": "active"}'/>
+                      </button>
+                  </div>
+      						<separator string="OpenCart LogIn Information"/>
+      						<group>
+      								<h3><field name="status"/></h3>
+      						</group>
+      						<group>
+      							<field name="api_url" required="1" placeholder="e.g:-e.g:-'http://www.opencart.com/upload'"/>
+      							<!-- <field name="api_user"/> -->
+      							<field name="api_key" />
+                    <field name="session_key" />
+                    <field name="connection_status" invisible='1'/>
+      						</group>
+      						<notebook>
+                    <page name='Operation'
+                        string='Operation'
+                        attrs="{'invisible':[('connection_status','=', False)]}"
+                        >
+                        <group name="export_buttons">
+                          <button
+                            attrs= "{'invisible':[('connection_status','=', False)]}"
+                            name="export_products"
+                            type="object"
+                            icon="fa-6x  fa-sitemap "
+                            aria-label="export_buttons"
+                            class="oe_highlight wk_operation_btn box"
+                            help="It will export products from Odoo to OpenCart">
+                            <span> Export Products</span> <span> <i class='fa fa-fw fa-cloud-download' aria-label="export_buttons1"/></span>
+                          </button>
+                          <button
+                             attrs= "{'invisible':[('connection_status','=', False)]}"
+                             name="export_category"
+                             type="object"
+                             icon="fa-6x  fa-user"
+                             aria-label="export_category"
+                             class="oe_highlight wk_operation_btn box"
+                             help="It will export all your Categories from Odoo to OpenCart">
+                             <span> Export Categories</span> <span> <i class='fa fa-fw fa-cloud-download' aria-label="export_category1"/></span>
+                          </button>
+                        </group>
+                        <group name="update_buttons">
+                          <button
+                              attrs= "{'invisible':[('connection_status','=', False)]}"
+                              name="%(action_update_confirmation_export)d"
+                              type="action"
+                              class="oe_highlight wk_operation_btn box"
+                              icon="fa-6x fa-dropbox "
+                              aria-label="update_buttons"
+                              help="It will Update Product from Odoo to OpenCart">
+                              <span> Update Product</span> <span> <i class='fa fa-fw fa-cloud-download' aria-label="download"/></span>
+                          </button>
+                          <button
+                              attrs= "{'invisible':[('connection_status','=', False)]}"
+                              name="update_category"
+                              type="object"
+                              class="oe_highlight wk_operation_btn box"
+                              icon="fa-6x fa-shopping-cart"
+                              aria-label="update_category"
+                              help="It will update Categories from Odoo to OpenCart">
+                              <span> Update Categories</span> <span>&#032; <i class='fa fa-fw fa-cloud-download' aria-label="update_category"/></span>
+                          </button>
+                        </group>
+                    </page>
+      							<page string="Configuration"  attrs="{'readonly': [('connection_status','=', True)]}">
+      								<group>
+                        <field name="state" class="oe_inline"/>
+                        <field name="oc_default_category" widget="selection" class="oe_inline"/>
+                        <field name="warehouse_id" required="1" class="oe_inline"/>
+                        <field name="location_id" class="oe_inline"/>
+                         <field name="stock_type" class="oe_inline"/>
+      								</group>
+                    </page>
+                    <page string="Default values">
+                        <separator string="Products"/>
+                            <p>
+                                Select Service Type Product to be used by OOB, when exporting Order from Opencart to Odoo.
+                            </p>
+                            <group>
+                                <label for="id" string="Service Products"/>
+                                <div>
+                                    <div>
+                                        <field name="oob_discount_product" class="oe_inline"/>
+                                        <p>used for Discount purposes</p>
+                                    </div>
+                                    <div>
+                                        <field name="oob_coupon_product" class="oe_inline"/>
+                                        <p>Used for Coupon purposes</p>
+                                    </div>
+                                </div>
+                            </group>
+                        <separator string="Sale Order"/>
+                            <p>
+                                Default Configuration For Sale Order used by OOB, when exporting Sale Order from Opencart to Odoo.
+                            </p>
+                            <group col="2">
+                                <field name="oob_payment_term" class="oe_inline"/>
+                                <field name="oob_sales_team" class="oe_inline"/>
+                                <field name="oob_sales_person" class="oe_inline"/>
+                            </group>
+                        <separator string="Sale Order Operation"/>
+                            <p>
+                                Default Configuration used by OOB, Which enables to do Sale Order Opreartion from Odoo to Opencart.
+                            </p>
+                            <div>
+                                <field name="oob_sale_order_invoice" class="oe_inline"/>
+                                <p>Enable for update invoice status at Opencart</p>
+                            </div>
+                            <div>
+                                <field name="oob_sale_order_shipment" class="oe_inline"/>
+                                <p>Enable for update shipment status at Opencart</p>
+                            </div>
+                            <div>
+                                <field name="oob_sale_order_cancel" class="oe_inline"/>
+                                <p>Enable for update cancel status at Opencart</p>
+                            </div>
+                        </page>
+                      </notebook>
+      					</sheet>
+      				</form>
+            </field>
+        </record>
+
+		<record id="opencart_configuration_tree" model="ir.ui.view">
+            <field name="name">opencart_configuration.tree</field>
+            <field name="model">opencart.configuration</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="OpenCart LogIn Information">
+					<field name="api_url" />
+					<field name="api_user" />
+					<field name="api_key" />
+					<field name="active"/>
+				</tree>
+			</field>
+    </record>
+		<record id="opencart_configuration_action" model="ir.actions.act_window">
+            <field name="name">OpenCart Configuration</field>
+            <field name="res_model">opencart.configuration</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="opencart_configuration_tree"/>
+        </record>
+
+
+        <!--  synchronization -->
+		<record id="opencart_sync_form" model="ir.ui.view">
+            <field name="name">opencart.sync.form</field>
+            <field name="model">opencart.sync</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form create="false" save="false" string="Synchronization">
+					<header>
+						<separator colspan="5" string="Opencart Synchronization"/>
+					</header>
+					<sheet>
+						<div>
+							<p>
+								<h3>Click here to configure your Opencart Api.</h3>
+								<button type="object" name="open_configuration" string="Configure opencart connection" icon="fa-cogs" aria-label="open_configuration" class="oe_inline oe_link"/>
+								<p>Before starting synchronization process, it's highly recommended to configure your opencart api.</p>
+
+							</p>
+						</div>
+						<separator string="Click to Export / Update data to OpenCart :"/>
+						<p class="oe_grey oe_inline">
+                                    By clicking on the buttons,
+                                    you will initiate the synchronizations
+                                    with OpenCart.
+		                </p>
+						<newline/>
+							<group name="d" col="4">
+								<label for="id" string="Update Products"/>
+									<div>
+										<button name="%(action_update_confirmation_export)d" string="  Update  Products" type="action"  class="oe_highlight" help="It will update,if any(Is Synchronized=no), all your exported products on OpenCart from Odoo" />
+										<!-- <label for="update_products"/> -->
+									</div>
+								<label for="id" string="Export Products"/>
+									<div>
+										<button name="export_products" string="  Export   Products  " type="object"  class="oe_highlight" help="It will export all your new products on Odoo to OpenCart"/>
+										<!-- <label for="export_products"/> -->
+									</div>
+								<label for="id" string="Update Categories"/>
+									<div>
+										<button name="update_category" string="Update Categories" type="object" class="oe_highlight" help="It will update,if any(Is Synchronized=no), all your exported categories on OpenCart from Odoo"/>
+										<!-- <label for="update_category"/> -->
+									</div>
+		                       <label for="id" string="Export Categories"/>
+									<div>
+										<button name="export_category" string="Export Categories" type="object" class="oe_highlight" help="It will export all your new categories on Odoo to OpenCart"/>
+										<!-- <label for="export_category"/> -->
+									</div>
+
+								<newline/>
+		                    </group>
+		                    <separator string="NOTE :"/>
+		                    <p class="oe_grey oe_inline">
+		                                    Exporting items will export all your items to OpenCart<br />
+		                                    Updating itmes will update only those items which are already present on the OpenCart i.e
+		                                    have entry in the POB Mapping Tables at Odoo`s end.
+		                	</p>
+					</sheet>
+				</form>
+			</field>
+    </record>
+
+    <record id="opencart_configuration_view_kanban" model="ir.ui.view">
+         <field name="name">opencart.configuration.kanban</field>
+          <field name="model">opencart.configuration</field>
+          <field name="type">kanban</field>
+          <field name="arch" type="xml">
+            <kanban class="oe_background_grey o_kanban_dashboard o_salesteam_kanban o_project_kanban ">
+              <field name="api_url"/>
+              <field name="connection_status"/>
+              <field name="name"/>
+              <field name="opencart_products"/>
+              <field name="opencart_categories"/>
+              <field name="opencart_orders"/>
+              <field name="opencart_customers"/>
+              <templates>
+                  <t t-name="kanban-box">
+                      <div t-attf-class="oe_kanban_global_click " style="padding-left:10px; height:300px" >
+                          <div class="o_project_kanban_manage">
+                              <a class="o_kanban_manage_toggle_button" href="#" style="margin-top:10px">More <i class="fa fa-caret-down" aria-label="caret"/></a>
+                          </div>
+                          <div class="bg-success label" style="width:100%;position: absolute;right: 0px;top:0px;height:18px;" attrs="{'invisible': [('connection_status','!=', True)]}">
+                            Connected
+                          </div>
+                          <div class="label bg-danger" style="width:100%;position: absolute;right: 0px;top:0px;height:18px;" attrs="{'invisible': [('connection_status','!=', False)]}">
+                            Error in connection.
+                          </div>
+                          <div class="o_project_kanban_main wk_o_project_kanban_main">
+                            <div class="o_kanban_card_content o_visible oe_kanban_global_click" style="display:block">
+                              <div class="o_kanban_primary_left" >
+                                 <div class="o_primary">
+                                     <center><span><t t-field="record.api_url.value"/></span></center>
+                                 </div>
+                                     <center><img style="max-width:200px;" src="/opencart_odoo_bridge/static/src/img/img.png" alt="icon"/>
+                                     <h3><field name="api_url"/></h3></center>
+                             </div>
+                           </div>
+                          <!-- </div> -->
+                          <div class="o_project_kanban_boxes " style="text-align: center;display:flex;top:-4px;position:relative">
+                              <a  class="o_project_kanban_box"
+                                  name = 'open_mapping_view'
+                                  type='object'
+                                  context="{
+                                  'mapping_model':'opencart.product.template',
+                                  'domain':[]
+                                  }"
+                                  style="padding:15px; background-color:#555487;width:25%;text-decoration:none;color:white"
+                                  >
+                                  <span class="o_value"  style="overflow:visible !important;font-size:18px"><t t-esc="record.opencart_products.value"/></span>
+                                  <span class="o_label" style="overflow:visible !important">Products</span>
+                              </a>
+                              <a class="o_project_kanban_box"
+                                  name = 'open_mapping_view'
+                                  type='object'
+                                  context="{
+                                  'mapping_model':'wk.order.mapping',
+                                  'domain':[]
+                                  }"
+                                  style="background:grey;padding:15px;width:25%;text-decoration:none;color:white"
+                                  >
+                                 <span class="o_value" style="overflow:visible !important;font-size:18px"><t t-esc="record.opencart_orders.value"/></span>
+                                  <span class="o_label" style="overflow:visible !important">Orders</span>
+                              </a>
+                              <a class="o_project_kanban_box"
+                                  name = 'open_mapping_view'
+                                  type='object'
+                                  context="{
+                                  'mapping_model':'opencart.product.category',
+                                  'domain':[]
+                                  }"
+                                  style="background:#555487;padding:15px;width:25%;text-decoration:none;color:white">
+                                  <span class="o_value" style="overflow:visible !important;font-size:18px"><t t-esc="record.opencart_categories.value"/></span>
+                                  <span class="o_label" style="overflow:visible !important">Categories</span>
+                              </a>
+                              <a class="o_project_kanban_box"
+                                   name = 'open_mapping_view'
+                                  type='object'
+                                  context="{
+                                  'mapping_model':'opencart.customer',
+                                  'domain':[]
+                                  }"
+                                   style="background:grey;padding:15px; width:25%;text-decoration:none;color:white">
+                                  <span class="o_value" style="overflow:visible !important;font-size:18px"><t t-esc="record.opencart_customers.value"/></span>
+                                  <span class="o_label" style="overflow:visible !important">Customers</span>
+                              </a>
+                          </div>
+                          <div class="container o_kanban_card_manage_pane dropdown-menu" role="menu">
+                              <t t-call="OOBDashboard"/>
+                          </div>
+                        </div>
+                      </div>
+                  </t>
+                  <t t-name="OOBDashboard">
+                      <div class="row o_kanban_card_settings" >
+                             <div >
+                               <div class="o_kanban_card_manage_title">
+                                   <span>Mappings</span>
+                               </div>
+                               <div>
+                                 <a name = 'open_mapping_view'
+                                 type='object'
+                                 context="{
+                                 'mapping_model':'opencart.product.template',
+                                 'domain':[]
+                                 }">Products</a>
+                               </div>
+                               <div>
+                                 <a
+                                 name = 'open_mapping_view'
+                                 type='object'
+                                 context="{
+                                 'mapping_model':'wk.order.mapping',
+                                 'domain':[]
+                                 }">Orders</a>
+                               </div>
+                               <div>
+                                 <a name = 'open_mapping_view'
+                                 type='object'
+                                 context="{
+                                 'mapping_model':'opencart.product.category',
+                                 'domain':[]
+                                 }">Categories</a>
+                               </div>
+                               <div>
+                                 <a name = 'open_mapping_view'
+                                 type='object'
+                                 context="{
+                                 'mapping_model':'opencart.customer',
+                                 'domain':[]
+                                 }">Customers</a>
+                               </div>
+                             </div>
+                             <div style="padding-top:100px;">
+                               <a href="https://site-module.com/" target="_blank">
+                                   <span class="o_label" style="overflow:visible !important">Support</span>
+                               </a>
+                             </div>
+                      </div>
+                  </t>
+              </templates>
+            </kanban>
+          </field>
+      </record>
+
+
+      <record id="action_opencart_kanban_view" model="ir.actions.act_window">
+          <field name="name">Opencart Synchronization</field>
+          <field name="res_model">opencart.configuration</field>
+          <field name="view_type">form</field>
+          <field name="view_mode">kanban,tree,form</field>
+          <field name="view_id" ref="opencart_configuration_view_kanban"/>
+          <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+              Click to define a new OpenCart connection.
+            </p><p style="color:#008080">
+                   At first configure the Opencart WebService on Opencart.
+    			   	 		 And then Define those credentials for OpenCart connection.
+                  </p>
+    							<a href="https://site-module.com/"
+    								 target="_blank"
+    								 style="background-color:#263238;margin-left:80px;font-size:em"
+    								 class="btn btn-primary"
+    								 title="Need help on Configuration" >
+    								<i class="fa fa-info-circle" aria-label="Configuration"
+    								></i>
+    									 Learn about OpenCart Connector.
+    							</a>
+    			</field>
+      </record>
+
+		<record id="opencart_sync_action" model="ir.actions.act_window">
+            <field name="name">Opencart Synchronization</field>
+            <field name="res_model">opencart.sync</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+            <field name="view_id" ref="opencart_sync_form"/>
+        </record>
+
+
+							<!--~~~~~Sale Orders~~~~~-->
+		<record id="order_cart_update_view" model="ir.ui.view">
+            <field name="name">order_cart_update_view.form</field>
+            <field name="model">sale.order</field>
+			<field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside" >
+					<page string="OpenCart Information" attrs="{'invisible':[('opencart_id','=',0)]}">
+						<group>
+							<field name="opencart_id" string="OpenCart Order Id"/>
+						</group>
+                    </page>
+				</notebook>
+			</field>
+        </record>
+						<!--~~~~~Product Mapping~~~~~-->
+		<record id="opencart_product_tree" model="ir.ui.view">
+            <field name="name">opencart_product.tree</field>
+            <field name="model">opencart.product</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="OpenCart Product"  colors="red:need_sync=='yes'" >
+						<field name="id"/>
+						<field name="product_name"/>
+						<field name="erp_template_id"/>
+						<field name="oc_product_id"/>
+						<field name="oc_option_id"/>
+                        <field name="instance_id"/>
+						<field name="need_sync"/>
+				</tree>
+			</field>
+        </record>
+
+		<record id="opencart_product_action" model="ir.actions.act_window">
+            <field name="name">Opencart Product</field>
+            <field name="res_model">opencart.product</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="opencart_product_tree"/>
+        </record>
+
+						<!--~~~~~Category Mapping~~~~~-->
+		<record id="mapping_category_tree" model="ir.ui.view">
+            <field name="name">mapping_category_tree.tree</field>
+            <field name="model">opencart.product.category</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Categories Mapping"  colors="red:need_sync=='yes'" create="false" >
+					<field name="id" string="Id"/>
+					<field name="odoo_id"/>
+					<field name="ecommerce_cat_id"/>
+                    <field name="created_by"/>
+                    <field name="instance_id"/>
+                    <field name="create_date"/>
+					<field name="write_date"/>
+                    <field name="need_sync"/>
+				</tree>
+			</field>
+        </record>
+
+		<record id="mapping_category_action" model="ir.actions.act_window">
+            <field name="name">Category Mapping View</field>
+            <field name="res_model">opencart.product.category</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="mapping_category_tree"/>
+        </record>
+
+						<!--~~~~~Customer Mapping~~~~~-->
+		<record id="mapping_customer_tree" model="ir.ui.view">
+            <field name="name">mapping_partner_tree.tree</field>
+            <field name="model">opencart.customer</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Customers"  colors="red:need_sync=='yes'" create="false" >
+					<field name="id" string="Id"/>
+					<field name="odoo_id" string="OpenCart Customer Id"/>
+					<field name="ecommerce_customer_id"/>
+                    <field name="ecommerce_address_id"/>
+                    <field name="created_by"/>
+                    <field name="instance_id"/>
+                    <field name="create_date"/>
+					<field name="write_date"/>
+                    <field name="need_sync"/>
+				</tree>
+			</field>
+        </record>
+
+		<record id="mapping_customer_action" model="ir.actions.act_window">
+            <field name="name">Customer Mapping View</field>
+            <field name="res_model">opencart.customer</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="mapping_customer_tree"/>
+        </record>
+
+		<!--~~~~~Address Mapping~~~~~-->
+		<!-- <record id="mapping_address_tree" model="ir.ui.view">
+            <field name="name">mapping_address_tree.tree</field>
+            <field name="model">res.partner</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Customers"  colors="red:need_sync=='yes'" create="false" >
+					<field name="name"/>
+					<field name="id" string="Erp Address Id"/>
+					<field name="opencart_customer_id" string="OpenCart Customer Id"/>
+					<field name="opencart_address_id" string="OpenCart Address Id"/>
+					<field name="need_sync"/>
+				</tree>
+			</field>
+        </record> -->
+
+		<!-- <record id="mapping_address_action" model="ir.actions.act_window">
+            <field name="name">Address Mapping View</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+			<field name="domain">[('opencart_customer_id','!=',0),('opencart_type','=','address')]</field>
+            <field name="view_id" ref="mapping_address_tree"/>
+        </record> -->
+
+		<!--~~~~~Order Mapping~~~~~-->
+
+        <record id="opencart_order_mapping_form" model="ir.ui.view">
+            <field name="name">wk.order.mapping.form</field>
+            <field name="model">wk.order.mapping</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Order Mapping">
+	                <group>
+						<field name="name" readonly="1"/>
+						<field name="ecommerce_channel" readonly="1"/>
+					</group>
+					<group>
+						<field name="erp_order_id" readonly="1"/>
+						<field name="ecommerce_order_id" readonly="1"/>
+					</group>
+				</form>
+			</field>
+        </record>
+
+		<record id="opencart_order_mapping_tree" model="ir.ui.view">
+            <field name="name">wk.order.mapping.tree</field>
+            <field name="model">wk.order.mapping</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree create="false" string="Opencart Order Mapping">
+					<field name="id"/>
+					<field name="name"/>
+					<field name="ecommerce_channel"/>
+					<field name="erp_order_id"/>
+					<field name="ecommerce_order_id"/>
+					<field name="order_status"/>
+					<field name="is_invoiced"/>
+					<field name="is_shipped"/>
+				</tree>
+			</field>
+        </record>
+
+		<!-- Search View for Opencart Orders  -->
+		<record id="opencart_order_mapping_search" model="ir.ui.view">
+			<field name="name">wk.order.mapping.search</field>
+			<field name="model">wk.order.mapping</field>
+			<field name="arch" type="xml">
+				<search string="OOB">
+					<field name="name" filter_domain="['|',('name','ilike',self),('ecommerce_channel','ilike',self)]"/>
+				</search>
+			</field>
+		</record>
+
+		<record id="mapping_order_action" model="ir.actions.act_window">
+            <field name="name">OpenCart Orders Mapping</field>
+            <field name="res_model">wk.order.mapping</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="opencart_order_mapping_tree"/>
+	        <field name="search_view_id" ref="opencart_order_mapping_search"/>
+	        <field name="domain">[("ecommerce_channel", '=', 'opencart')]</field>
+        </record>
+
+
+        	<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~product_template~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+		<record id="opencart_product_template_form" model="ir.ui.view">
+            <field name="name">opencart.product.template.form</field>
+            <field name="model">opencart.product.template</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Template Mapping" edit="false">
+					<field name="template_name" required="1" />
+					<newline/>
+					<field name="oc_product_id" required="1" />
+					<field name="erp_template_id" invisible="1"/>
+					<field name="need_sync" invisible="1"/>
+				</form>
+			</field>
+        </record>
+
+		      <record id="opencart_product_template_tree" model="ir.ui.view">
+            <field name="name">opencart.product.template.tree</field>
+            <field name="model">opencart.product.template</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+              <tree string="OpenCart Product Templates"  colors="red:need_sync=='yes'" >
+      					<field name="id"/>
+      					<field name="template_name"/>
+      					<field name="erp_template_id"/>
+      					<field name="oc_product_id"/>
+                          <field name="instance_id"/>
+      					<field name="need_sync"/>
+      				</tree>
+      			</field>
+
+        </record>
+		<record id="opencart_product_template_action" model="ir.actions.act_window">
+            <field name="name">OpenCart Product Template</field>
+            <field name="res_model">opencart.product.template</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="opencart_product_template_tree"/>
+        </record>
+
+        <!--~~~~~~~~~~~~~~~~~~~~~~opencart_product_option~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+		<record id="opencart_product_option_form" model="ir.ui.view">
+            <field name="name">opencart_product_option.form</field>
+            <field name="model">opencart.product.option</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Product Options" >
+						<field name="name" required="1"/>
+						<newline/>
+						<field name="opencart_id" required="1"/>
+						<field name="erp_id" invisible="1"/>
+                        <field name="instance_id"/>
+						<field name="need_sync" invisible="1"/>
+				</form>
+			</field>
+        </record>
+		<record id="opencart_product_option_tree" model="ir.ui.view">
+            <field name="name">opencart_product_option_tree.tree</field>
+            <field name="model">opencart.product.option</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Product Options"  colors="red:need_sync=='yes'" >
+						<field name="id"/>
+						<field name="name"/>
+						<field name="erp_id"/>
+						<field name="opencart_id"/>
+                        <field name="instance_id"/>
+						<field name="need_sync"/>
+				</tree>
+			</field>
+        </record>
+		<record id="opencart_product_option_action" model="ir.actions.act_window">
+            <field name="name">Opencart Product Option</field>
+            <field name="res_model">opencart.product.option</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="opencart_product_option_tree"/>
+        </record>
+
+        <!--~~~~~~~~~~~~~~opencart_product_option_value~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+		<record id="opencart_product_option_value_form" model="ir.ui.view">
+            <field name="name">opencart_product_option_value.form</field>
+            <field name="model">opencart.product.option.value</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Product Option Value" >
+						<field name="name" required="1"/>
+						<newline/>
+						<field name="opencart_value_id" required="1"/>
+						<field name="erp_id" invisible="1"/>
+                         <field name="instance_id"/>
+						<field name="need_sync" invisible="1"/>
+				</form>
+			</field>
+        </record>
+		<record id="opencart_product_option_value_tree" model="ir.ui.view">
+            <field name="name">option.tree</field>
+            <field name="model">opencart.product.option.value</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Product Option Value"  colors="red:need_sync=='yes'" >
+						<field name="id"/>
+						<field name="name"/>
+						<field name="erp_id"/>
+						<field name="opencart_value_id"/>
+						<!-- <field name="erp_attr_id"/>	 -->
+						<field name="opencart_option_id"/>
+                         <field name="instance_id"/>
+						<field name="need_sync"/>
+				</tree>
+			</field>
+        </record>
+		<record id="opencart_product_option_value_action" model="ir.actions.act_window">
+            <field name="name">Opencart Product Option Value</field>
+            <field name="res_model">opencart.product.option.value</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="opencart_product_option_value_tree"/>
+        </record>
+
+		<!--~~~~~~~~~~~
+		~~~~~~~~~~~~~~~
+		Main-Menu
+		~~~~~~~~~~~~~~~
+		~~~~~~~~~~~~-->
+		<menuitem id="id_parent_cart2erp" name="OpenCart Odoo Connector" sequence="5"/>
+			<!--~~~~~synchronization Menu~~~~~-->
+			<menuitem  id="menu_sync_id" name="OpenCart Synchronization" parent="id_parent_cart2erp" sequence="1"/>
+				<menuitem  id="sync_id0" name="  OpenCart Synchronization" parent="menu_sync_id" action="action_opencart_kanban_view"/>
+			<!--~~~~~Mapping Menu~~~~~-->
+			<menuitem  id="menu_id_mapping_view" name="Mappings" parent="id_parent_cart2erp" sequence="3"/>
+				<menuitem  id="product_template_mapping_menu_id" name="Product Template Mapping" parent="menu_id_mapping_view" action="opencart_product_template_action" sequence="1"/>
+				<menuitem  id="product_id1" name="Products Variant" parent="menu_id_mapping_view" action="opencart_product_action" sequence="2"/>
+				<menuitem  id="category_mapping" name="Category Mapping" parent="menu_id_mapping_view" action="mapping_category_action" sequence="3"/>
+				<menuitem  id="customer_mapping" name="Customer Mapping" parent="menu_id_mapping_view" action="mapping_customer_action" sequence="4"/>
+				<!-- <menuitem  id="address_mapping" name="Address Mapping" parent="menu_id_mapping_view" action="mapping_address_action" sequence="5"/> -->
+				<menuitem  id="order_mapping" name="Orders Mapping" parent="menu_id_mapping_view" action="mapping_order_action" sequence="6"/>
+			    <menuitem  id="menu_opencart_id1" name="Configuration" parent="id_parent_cart2erp" sequence="4"/>
+				<!-- <menuitem id="customer_menu_tree" name="Customers" parent="menu_opencart_id1" action="base.action_partner_form"/>
+
+				<menuitem  id="product_id2" name="Product Categories" parent="menu_opencart_id1" action="product.product_category_action_form"/> -->
+
+				<menuitem  id="product_attribute_mapping_menu_id" name="Product Options " parent="menu_id_mapping_view" action="opencart_product_option_action" sequence="7"/>
+
+				<menuitem  id="product_attribute_value_mapping_menu_id" name="Product Option Values " parent="menu_id_mapping_view" action="opencart_product_option_value_action" sequence="8"/>
+
+		</data>
+</odoo>

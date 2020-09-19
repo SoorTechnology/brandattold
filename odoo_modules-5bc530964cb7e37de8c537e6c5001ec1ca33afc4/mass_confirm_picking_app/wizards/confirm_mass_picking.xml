@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="validate_picking_action_wizard" model="ir.ui.view">
+        <field name="name">stock.picking.confirm.wizard</field>
+        <field name="model">stock.picking.confirm</field>
+        <field name="arch" type="xml">
+            <form string="Valdiate Picking">
+                <span>  Please Validate Picking for the following Sale Orders: </span><field name="sale_orders" readonly="1"/>
+                <footer>
+                    <button string="Confirm" name="mass_confirm" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="validate_picking_success_wizard" model="ir.ui.view">
+        <field name="name">stock.picking.success.wizard</field>
+        <field name="model">stock.picking.success</field>
+        <field name="arch" type="xml">
+            <form string="Success Message">
+                <p role="alert">Your Selected Sale Orders Picking Validated Successfully.</p>
+                <footer>
+                    <button string="Ok" class="btn-primary" special="save" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="validate_picking_Fails_wizard" model="ir.ui.view">
+        <field name="name">stock.picking.success.wizard</field>
+        <field name="model">stock.picking.success</field>
+        <field name="arch" type="xml">
+            <form string="Fail Message">
+                <p role="alert">Some Selected Sale Orders are not in confirm state , please confirm then validate the picking.</p>
+                <footer>
+                    <button string="Ok" class="btn-primary" special="save" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="validate_picking_details_Fails_wizard" model="ir.ui.view">
+        <field name="name">stock.picking.success.wizard</field>
+        <field name="model">stock.picking.success</field>
+        <field name="arch" type="xml">
+            <form string="Fail Message">
+                <p role="alert">Selected Sales Order's picking is already in Done state.</p>
+                <footer>
+                    <button string="Ok" class="btn-primary" special="save" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="validate_picking_action" model="ir.actions.act_window">
+        <field name="name">Validate Picking</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.picking.confirm</field>
+        <field name="src_model">stock.picking.confirm</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="sale.model_sale_order" />
+    </record>
+
+    
+</odoo>

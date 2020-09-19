@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mass_confirm,access.mass.confirm,mass_confirm_picking_app.model_mass_confirm,,1,1,1,1
+access_stock_picking_confirm,access.stock.picking.confirm,mass_confirm_picking_app.model_stock_picking_confirm,,1,1,1,1

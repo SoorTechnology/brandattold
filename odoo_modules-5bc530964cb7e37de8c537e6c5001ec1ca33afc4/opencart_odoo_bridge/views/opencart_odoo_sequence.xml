@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present site-module Software Pvt. Ltd. (<https://site-module.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<odoo>
+    <data noupdate="1">
+    </data>
+    <data>
+		<!-- ####################################  SERVER ACTIONS  ###################################### -->
+							<!--~~~~~~~ Server action for update product mapping ~~~~~~~~~-->
+
+    <record id="action_change_product_update_status" model="ir.actions.server">
+        <field name="name">Change Update Status</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="opencart_odoo_bridge.model_mapping_update"/>
+        <field name="binding_model_id" ref="model_product_template"/>
+        <field name="state">code</field>
+        <field name="code">action = model.open_update_wizard()</field>
+    </record>
+
+    </data>
+</odoo>
